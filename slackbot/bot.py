@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
+from functools import wraps
 import imp
 import importlib
 import logging
@@ -48,6 +49,7 @@ class Bot(object):
 
 
 def respond_to(matchstr, flags=0):
+    @wraps
     def wrapper(func):
         PluginsManager.commands['respond_to'][
             re.compile(matchstr, flags)] = func
@@ -83,7 +85,8 @@ def default_reply(*args, **kwargs):
 
     if not invoked:
         func = args[0]
-
+    
+    @wraps
     def wrapper(func):
         PluginsManager.commands['default_reply'][
             re.compile(matchstr, flags)] = func
